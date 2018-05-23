@@ -1,14 +1,22 @@
+import apistar
 from miniconfig import ConfiguratorCore, reify
 from miniconfig import Context as _Context
-import apistar
-import logging
-logger = logging.getLogger(__name__)
 
 
 class Context(_Context):
+    collection_factory = list
+
     @reify
     def routes(self):
-        return []
+        return self.collection_factory()
+
+    @reify
+    def components(self):
+        return self.collection_factory()
+
+    @reify
+    def event_hooks(self):
+        return self.collection_factory()
 
 
 class Configurator(ConfiguratorCore):
@@ -20,8 +28,15 @@ class Configurator(ConfiguratorCore):
 
     def _make_app(self, factory, *, kwargs):
         self.commit()
+        if "components" in kwargs:
+            self.components.extend(kwargs.pop("components"))
+        if "event_hooks" in kwargs:
+            self.event_hookss.extend(kwargs.pop("event_hooks"))
+
         app = factory(
             routes=self.routes,
+            components=self.components,
+            event_hooks=self.event_hooks,
             **kwargs,
         )
         return app
@@ -33,24 +48,7 @@ class Configurator(ConfiguratorCore):
         return self._make_app(self.async_app_factory, kwargs=kwargs)
 
 
-def add_route(config, url, method, handler, name=None, documented=True, standalone=False):
-    # todo: confilict detection?
-    def register():
-        route = config.route_factory(
-            url,
-            method,
-            handler,
-            name=name,
-            documented=documented,
-            standalone=standalone,
-        )
-        logger.debug("add route %s %s %s", method, url, route.name)
-        config.routes.append(route)
-
-    return config.action(register)
-
-
 def make_configurator(configurator_factory=Configurator):
     c = configurator_factory()
-    c.add_directive("add_route", add_route)
+    c.include(".directives")
     return c
