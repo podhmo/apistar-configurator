@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-
 import os
 import sys
 
@@ -16,7 +15,8 @@ except IOError:
 
 
 install_requires = [
-    'setuptools',
+    'apistar',
+    'miniconfig'
 ]
 
 
