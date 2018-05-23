@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/podhmo/apistar-configurator.svg?branch=master
+    :target: https://travis-ci.org/podhmo/apistar-configurator
+
 apistar_configurator
 ========================================
 
@@ -29,3 +32,5 @@ welcome.py
   def includeme(config):
       config.add_route("/", method="GET", handler=welcome)
 
+
+more examples are `here <./examples>`_
