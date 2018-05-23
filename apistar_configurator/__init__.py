@@ -15,15 +15,22 @@ class Configurator(ConfiguratorCore):
     context_factory = Context
 
     app_factory = apistar.App
+    async_app_factory = apistar.ASyncApp
     route_factory = apistar.Route
 
-    def make_app(self, **kwargs):
+    def _make_app(self, factory, *, kwargs):
         self.commit()
-        app = self.app_factory(
+        app = factory(
             routes=self.routes,
             **kwargs,
         )
         return app
+
+    def make_app(self, **kwargs):
+        return self._make_app(self.app_factory, kwargs=kwargs)
+
+    def make_async_app(self, **kwargs):
+        return self._make_app(self.async_app_factory, kwargs=kwargs)
 
 
 def add_route(config, url, method, handler, name=None, documented=True, standalone=False):
