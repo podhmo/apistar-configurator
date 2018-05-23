@@ -28,10 +28,12 @@ class Configurator(ConfiguratorCore):
 
     def _make_app(self, factory, *, kwargs):
         self.commit()
+        if "routes" in kwargs:
+            self.routes.extend(kwargs.pop("routes"))
         if "components" in kwargs:
             self.components.extend(kwargs.pop("components"))
         if "event_hooks" in kwargs:
-            self.event_hookss.extend(kwargs.pop("event_hooks"))
+            self.event_hooks.extend(kwargs.pop("event_hooks"))
 
         app = factory(
             routes=self.routes,
