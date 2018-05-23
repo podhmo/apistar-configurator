@@ -1,7 +1,7 @@
 apistar_configurator
 ========================================
 
-configurator for `apistar<https://github.com/encode/apistar>_`
+configurator for `apistar <https://github.com/encode/apistar>`_
 
 
 app.py
