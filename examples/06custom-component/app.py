@@ -54,8 +54,8 @@ def hello_user(user: User) -> dict:
 
 def includeme(config):
     config.add_route('/', method='GET', handler=hello_user)
-    config.add_component(UserComponent())
-    config.add_event_hook(MustBeAuthenticated())
+    config.add_component(UserComponent)
+    config.add_event_hook(MustBeAuthenticated)
 
 
 if __name__ == "__main__":
